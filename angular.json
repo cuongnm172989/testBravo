@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "testBravo"
+    }
+  },
+  "defaultProject": "testBravo",
+  "cli": {
+    "analytics": "cc4415f3-cd69-40b4-be86-3243e64f34f1"
+  }
 }
