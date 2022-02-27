@@ -1,52 +1,104 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
+export interface UserData {
+  id: string;
+  name: string;
+  progress: string;
+  fruit: string;
+}
+
+/** Constants used to fill up our data base. */
+const FRUITS: string[] = [
+  'blueberry',
+  'lychee',
+  'kiwi',
+  'mango',
+  'peach',
+  'lime',
+  'pomegranate',
+  'pineapple',
+];
+const NAMES: string[] = [
+  'Maia',
+  'Asher',
+  'Olivia',
+  'Atticus',
+  'Amelia',
+  'Jack',
+  'Charlotte',
+  'Theodore',
+  'Isla',
+  'Oliver',
+  'Isabella',
+  'Jasper',
+  'Cora',
+  'Levi',
+  'Violet',
+  'Arthur',
+  'Mia',
+  'Thomas',
+  'Elizabeth',
+];
 @Component({
   selector: 'app-table-customer',
   templateUrl: './table-customer.component.html',
   styleUrls: ['./table-customer.component.scss']
 })
-export class TableCustomerComponent implements OnInit {
+export class TableCustomerComponent implements AfterViewInit {
+  
 
-  data = [
-    { state: 'MN', county: '1', item: 0.297 },
-    { state: 'MN', county: '1', item: 0.04 },
-    { state: 'MN', county: '3', item: 0.14 },
-    { state: 'CA', county: '2', item: 0.019 },
-    { state: 'MN', county: '1', item: 0.0374 }, 
-    { state: 'CA', county: '2', item: 0.037 },
-    { state: 'CA', county: '3', item: 0.14 }
-  ];
+  jsonDataResult: any;
+  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
+  dataSource: MatTableDataSource<UserData>;
 
-  dataExt: any[] = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
-    this.processData();
-  }
+  constructor(private http: HttpClient) {
+    
+    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-  private processData() {
-    const statesSeen = {};
-    const countiesSeen = {};
-
-    this.dataExt = this.data.sort((a, b) => {
-      const stateComp = a.state.localeCompare(b.state);
-      return stateComp ? stateComp : a.county.localeCompare(b.county);
-    }).map(x => {
-      const stateSpan = statesSeen[x.state] ? 0 :
-        this.data.filter(y => y.state === x.state).length;
-
-      statesSeen[x.state] = true;
-
-      const countySpan = countiesSeen[x.state] && countiesSeen[x.state][x.county] ? 0 :
-        this.data.filter(y => y.state === x.state && y.county === x.county).length;
-
-      countiesSeen[x.state] = countiesSeen[x.state] || {};
-      countiesSeen[x.state][x.county] = true;
-
-      return { ...x, stateSpan, countySpan };
+    // Assign the data to the data source for the table to render
+    this.dataSource = new MatTableDataSource(users);
+    this.http.get('assets/data.json').subscribe((res) => {
+      this.jsonDataResult = res;
+      console.log('--- result :: ',  this.jsonDataResult);
     });
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  
+
+}
+
+function createNewUser(id: number): UserData {
+  const name =
+    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
+    ' ' +
+    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
+    '.';
+
+  return {
+    id: id.toString(),
+    name: name,
+    progress: Math.round(Math.random() * 100).toString(),
+    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
+  };
 }

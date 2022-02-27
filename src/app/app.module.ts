@@ -7,18 +7,18 @@ import { HeaderComponent } from './header/header.component';
 import { StatisticComponent } from './statistic/statistic.component';
 import { TableCustomerComponent } from './statistic/table-customer/table-customer.component';
 import { FooterComponent } from './footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    StatisticComponent,
-    TableCustomerComponent,
     FooterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
