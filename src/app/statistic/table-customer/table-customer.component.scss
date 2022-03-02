@@ -20,8 +20,12 @@ tr.mat-header-row {
 th.mat-header-cell, td.mat-cell {
   text-align: center;
   border: 1px solid #e5e5e5;
-  padding: 7px !important;
+  padding: 0px 10px !important;
 }
 .mat-cell{
+  color: #0000008a;
+}
+.mat-header-cell {
+  font-weight: 600;
   color: #333;
 }

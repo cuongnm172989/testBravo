@@ -58,6 +58,7 @@ export interface EachData {
   // TransCode: any;
   // WorkProcessCode: any;
   // _FormatStyleKey: any;
+
 }
 
 
@@ -68,7 +69,7 @@ export interface EachData {
 })
 export class TableCustomerComponent implements AfterViewInit {
   
-
+  data: any;
   jsonDataResult: any;
   listInfo = [];
 
@@ -97,7 +98,10 @@ export class TableCustomerComponent implements AfterViewInit {
       console.log('--- result :: ',  this.listInfo);
 
       this.dataSource = new MatTableDataSource(this.listInfo);
-      console.log("pagi, sort", this.paginator, this.sort)
+      
+      this.data = this.dataSource.filteredData;
+
+      console.log("dataSource", this.dataSource, this.data);
       // console.log("dât", this.dataSource2, this.dataSource)
 
     });
@@ -114,10 +118,8 @@ export class TableCustomerComponent implements AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // if (this.dataSource2.paginator) {
-    //   this.dataSource2.paginator.firstPage();
-    // }
+    this.data = this.dataSource.filteredData
+    console.log("log:",filterValue,this.dataSource, this.data);
   }
 
   
