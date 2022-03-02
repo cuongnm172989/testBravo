@@ -1,6 +1,3 @@
-
-
-
 <div class="container mt-5">
   <!-- <table border="1" bordercolor="black" width="300" cellspacing="0" cellpadding="5">
     <td *ngFor="let item of ds">
@@ -12,80 +9,137 @@
   </table> -->
   <mat-form-field appearance="standard">
     <mat-label>Tìm kiếm</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ví dụ. thanh toán" #input>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ví dụ. thanh toán"
+      #input
+    />
   </mat-form-field>
-  
 
-  <div class="mat-elevation-z8" style="overflow-y:scroll; height:70vh;">
-
+  <div class="mat-elevation-z8" style="overflow-y: scroll; height: 70vh">
     <table mat-table [dataSource]="data">
-
       <ng-container matColumnDef="order">
         <th mat-header-cell *matHeaderCellDef [attr.colspan]="2">Chứng từ</th>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2"> Diễn giải </th>
+        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Diễn giải</th>
       </ng-container>
 
       <ng-container matColumnDef="account">
-        <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> Tài khoản </th>
+        <th mat-header-cell *matHeaderCellDef [attr.colspan]="2">Tài khoản</th>
       </ng-container>
 
       <ng-container matColumnDef="money">
-        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2"> Tiền </th>
+        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Tiền</th>
       </ng-container>
 
       <ng-container matColumnDef="change">
-        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2"> Tỷ giá </th>
+        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Tỷ giá</th>
       </ng-container>
 
       <ng-container matColumnDef="DocDate">
-        <th mat-header-cell *matHeaderCellDef > Ngày </th>
-        <td mat-cell *matCellDef="let row"> {{transfer.normalize(row.DocDate)}} </td>
+        <th mat-header-cell *matHeaderCellDef>Ngày</th>
+        <td mat-cell *matCellDef="let row">
+          {{ transfer.normalize(row.DocDate) }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="DocNo">
-        <th mat-header-cell *matHeaderCellDef > Số </th>
-        <td mat-cell *matCellDef="let row"> {{row.DocNo}} </td>
+        <th mat-header-cell *matHeaderCellDef>Số</th>
+        <td mat-cell *matCellDef="let row">{{ row.DocNo }}</td>
       </ng-container>
 
       <ng-container matColumnDef="Description">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Description </th>
-        <td style="text-align: left;" mat-cell *matCellDef="let row"> {{row.Description}} </td>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{ display: 'none' }">
+          Description
+        </th>
+        <td style="text-align: left" mat-cell *matCellDef="let row">
+          {{ row.Description }}
+        </td>
       </ng-container>
-  
+
       <ng-container matColumnDef="DebitAmount">
-        <th mat-header-cell *matHeaderCellDef > Nợ </th>
-        <td style="text-align: left;" mat-cell *matCellDef="let row"> {{row.DebitAmount}} </td>
+        <th mat-header-cell *matHeaderCellDef>Nợ</th>
+        <td style="text-align: left" mat-cell *matCellDef="let row">
+          {{ row.DebitAmount }}
+        </td>
       </ng-container>
-  
+
       <ng-container matColumnDef="CreditAmount">
-        <th mat-header-cell *matHeaderCellDef > Có </th>
-        <td mat-cell *matCellDef="let row"> {{row.CreditAmount}} </td>
+        <th mat-header-cell *matHeaderCellDef>Có</th>
+        <td mat-cell *matCellDef="let row">{{ row.CreditAmount }}</td>
       </ng-container>
 
       <ng-container matColumnDef="Amount">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Tiền </th>
-        <td style="text-align: left;" mat-cell *matCellDef="let row"> {{transfer.toVND(row.Amount)}} </td>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{ display: 'none' }">
+          Tiền
+        </th>
+        <td style="text-align: left" mat-cell *matCellDef="let row">
+          {{ transfer.toVND(row.Amount) }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="ExchangeRate">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}"> Tỷ giá </th>
-        <td mat-cell *matCellDef="let row"> {{transfer.toComma(row.ExchangeRate, 2)}} </td>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{ display: 'none' }">
+          Tỷ giá
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ transfer.toComma(row.ExchangeRate, 2) }}
+        </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="['order', 'description','account','money','change']"></tr>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'order',
+          'description',
+          'account',
+          'money',
+          'change'
+        ]"
+      ></tr>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
       <!-- Row shown when there is no matching data. -->
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="4">
+          No data matching the filter "{{ input.value }}"
+        </td>
       </tr>
+
+      <ng-container matColumnDef="groupHeaderDate">
+        <td
+          [attr.colspan]="displayedColumns.length - 2"
+          mat-cell
+          *matCellDef="let group"
+        >
+          <strong>{{  transfer.normalize(group.Date) }}</strong>
+        </td>
+      </ng-container>
+      <ng-container  matColumnDef="SumAmount">
+        <td style="text-align: left;" [attr.colspan]="1" mat-cell *matCellDef="let group">
+          <strong>{{  transfer.toVND(group.SumAmount) }} </strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="None">
+        <td [attr.colspan]="1" mat-cell *matCellDef="let group">
+          <!-- <strong>{{ group.SumAmount }} </strong> -->
+        </td>
+      </ng-container>
+
+      <tr
+        mat-row
+        style="background-color: aqua;"
+        *matRowDef="
+          let row;
+          columns: ['groupHeaderDate', 'SumAmount', 'None'];
+          when: isHeader
+        "
+      ></tr>
     </table>
-  
   </div>
-  
 </div>

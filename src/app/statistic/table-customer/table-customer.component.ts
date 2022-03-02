@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -5,11 +6,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TransferLib } from 'src/app/shared/transferLib.service.';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
+export interface GroupData {
+  Date: any;
+  SumAmount: any;
+  isHeader: boolean;
 }
 
 
@@ -69,7 +69,7 @@ export interface EachData {
 })
 export class TableCustomerComponent implements AfterViewInit {
   
-  data: any;
+  data: (GroupData | EachData)[];
   jsonDataResult: any;
   listInfo = [];
 
@@ -99,9 +99,9 @@ export class TableCustomerComponent implements AfterViewInit {
 
       this.dataSource = new MatTableDataSource(this.listInfo);
       
-      this.data = this.dataSource.filteredData;
+      this.groupDataByDate();
 
-      console.log("dataSource", this.dataSource, this.data);
+      
       // console.log("dât", this.dataSource2, this.dataSource)
 
     });
@@ -109,20 +109,45 @@ export class TableCustomerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     console.log("pagi, sort", this.paginator, this.sort)
-    // this.dataSource2.paginator = this.paginator;
-    // this.dataSource2.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.data = this.dataSource.filteredData
-    console.log("log:",filterValue,this.dataSource, this.data);
+    this.groupDataByDate();
   }
 
-  
+  groupDataByDate(): void{
+    this.data = [];
+    var sum : number;
+    var date= '';
+    this.dataSource.filteredData.forEach((element,index) =>{
+      if ( date != element.DocDate && date!= '' ){
+        this.data.unshift({Date: date, SumAmount: sum, isHeader:true})
+        date = element.DocDate;
+        sum=0;
+        
+      }
+      else if ( date== '') {
+        date = element.DocDate;
+        sum = 0;
+      }
+
+      this.data.unshift(element);
+      // console.log("index",index, this.dataSource.filteredData.length);
+      sum += element.Amount;
+
+      if ( index == this.dataSource.filteredData.length-1 ){
+        this.data.unshift({Date: date, SumAmount: sum, isHeader:true})
+      }
+    });
+    // this.data.push({Date: "10/3/2022", SumAmount: 1230000, isHeader: true});
+    // this.data.unshift({Date: "10/3/2022", SumAmount: 1230000, isHeader: true});
+    // console.log("dataSource", this.dataSource, this.data);
+  }  
+  isHeader(index: number, item: any) {
+    return item.isHeader;
+  }
 
 }
 
