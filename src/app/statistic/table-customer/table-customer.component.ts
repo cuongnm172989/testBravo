@@ -121,7 +121,7 @@ export class TableCustomerComponent implements AfterViewInit {
     this.data = [];
     var sum : number;
     var date= '';
-    this.dataSource.filteredData.forEach((element,index) =>{
+    this.dataSource.filteredData.slice().reverse().forEach((element,index) =>{
       if ( date != element.DocDate && date!= '' ){
         this.data.unshift({Date: date, SumAmount: sum, isHeader:true})
         date = element.DocDate;
