@@ -116,8 +116,9 @@
           [attr.colspan]="displayedColumns.length - 2"
           mat-cell
           *matCellDef="let group"
+          style="text-align: left; padding-left: 20px !important;"
         >
-          <strong>{{  transfer.normalize(group.Date) }}</strong>
+          <strong>Ngày: {{  transfer.normalize(group.Date) }}</strong>
         </td>
       </ng-container>
       <ng-container  matColumnDef="SumAmount">

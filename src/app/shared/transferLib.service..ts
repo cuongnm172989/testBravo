@@ -34,7 +34,7 @@ export class TransferLib {
     }
     normalize(time: string){
         // console.log('trans: ', moment(time).utc().format('MM/DD/YYYY'))
-        return moment(time).utc().format('MM/DD/YYYY');
+        return moment(time).utc().format('DD/MM/YYYY');
     }
     toVND(money: any){
       return new Intl.NumberFormat('en-US').format(money)
